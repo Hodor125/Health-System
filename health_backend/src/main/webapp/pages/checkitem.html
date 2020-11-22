@@ -27,9 +27,10 @@
                 <div class="box">
                     <div class="filter-container">
                         <el-input placeholder="项目编码/项目名称" v-model="pagination.queryString" style="width: 200px;" class="filter-item"></el-input>
-                        <el-button @click="findPage()" class="dalfBut">查询</el-button>
+                        <el-button @click="findPage(1)" class="dalfBut">查询</el-button>
                         <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
                     </div>
+                    <!--绑定表格显示的数据-->
                     <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
                         <el-table-column type="index" align="center" label="序号"></el-table-column>
                         <el-table-column prop="code" label="项目编码" align="center"></el-table-column>
@@ -48,6 +49,7 @@
                             </template>
                         </el-table-column>
                     </el-table>
+                    <!--分页条-->
                     <div class="pagination-container">
                         <el-pagination
                             class="pagiantion"
@@ -225,31 +227,136 @@
             },
             //钩子函数，VUE对象初始化完成后自动执行
             created() {
+                this.findPage();
             },
             methods: {
                 //编辑
                 handleEdit() {
+                    //进行表单校验
+                    this.$refs["dataEditForm"].validate((valid) => {
+                        if(valid){
+                            //隐藏窗口
+                            this.dialogFormVisible4Edit = false;
+                            //发送请求
+                            axios.post("/checkitem/edit.do",this.formData)
+                                .then((res)=>{
+                                    if(res.data.flag){
+                                        this.$message({
+                                            message: res.data.message,
+                                            type: 'success'
+                                        });
+                                    } else {
+                                        this.$message({
+                                            message: res.data.message,
+                                            type: 'error'
+                                        });
+                                    }
+                                })
+                                .finally(() => {
+                                    this.findPage();
+                                })
+                        } else {
+                            this.$message({
+                                message: "表单校验失败",
+                                type: 'error'
+                            });
+                        }
+                    })
                 },
                 //添加
                 handleAdd () {
+                    this.$refs['dataAddForm'].validate((valid) => {
+                        if(valid){
+                            //校验通过则提交axios请求
+                            axios.post("/checkitem/add.do",this.formData)
+                                .then((res)=>{
+                                    console.log(res.data);
+                                })
+                                .finally(() => {
+                                    //一定要执行的
+                                    this.resetForm();
+                                    this.findPage();
+                                });
+                        }
+                    })
                 },
                 //分页查询
-                findPage() {
+                    findPage(page) {
+
+                    //分页查询，供其他函数调用
+                    //封装请求的三个参数成json对象：当前页，每页大小，查询条件
+                    var params = {
+                        currentPage:this.pagination.currentPage,
+                        pageSize:this.pagination.pageSize,
+                        queryString:this.pagination.queryString,
+                    };
+                    if(page != undefined){
+                        params.currentPage = page;
+                    }
+                    axios.post("/checkitem/findPage.do",params)
+                        .then((res)=>{
+                            this.pagination.total = res.data.total;
+                            this.dataList = res.data.rows;
+                        })
                 },
                 // 重置表单
                 resetForm() {
+                    this.formData = {};
                 },
                 // 弹出添加窗口
                 handleCreate() {
+                    this.dialogFormVisible = true;
+                    this.resetForm();
                 },
                 // 弹出编辑窗口
                 handleUpdate(row) {
+                    axios.get("/checkitem/findById.do?id=" + row.id)
+                        .then((res)=>{
+                            if(res.data.flag){
+                                //查询成功
+                                this.dialogFormVisible4Edit = true;
+                                this.formData = res.data.data;
+                            } else {
+                                this.$message().error("显示失败，请刷新页面");
+                            }
+                        });
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
+                    this.pagination.currentPage = currentPage;
+                    this.findPage();
                 },
                 // 删除
                 handleDelete(row) {
+                    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        axios.get("/checkitem/deleteById.do?id=" + row.id)
+                            .then((res)=>{
+                                if(res.data.flag){
+                                    this.$message.success(res.data.message);
+                                } else {
+                                    this.$message.error(res.data.message);
+                                }
+                            })
+                            .catch(() => {
+                                this.$message().error("未知错误");
+                            })
+                            .finally(() => {
+                                this.findPage();
+                            })
+                        // this.$message({
+                        //     type: 'success',
+                        //     message: '删除成功!'
+                        // });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
                 }
             }
         })
