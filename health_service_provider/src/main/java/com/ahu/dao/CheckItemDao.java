@@ -4,6 +4,8 @@ import com.ahu.pojo.CheckItem;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 框架扫描已经配置在spring-dao.xml文件中了，会动态代理生成实现类
  * @author ：hodor007
@@ -23,4 +25,6 @@ public interface CheckItemDao {
     CheckItem findById(Integer id);
 
     void updateById(CheckItem checkItem);
+
+    List<CheckItem> findAll();
 }

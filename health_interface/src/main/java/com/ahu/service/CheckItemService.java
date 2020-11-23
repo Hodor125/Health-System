@@ -5,6 +5,8 @@ import com.ahu.entity.QueryPageBean;
 import com.ahu.entity.Result;
 import com.ahu.pojo.CheckItem;
 
+import java.util.List;
+
 /**
  * @author ：XXXX
  * @date ：Created in 2020/11/21
@@ -21,4 +23,6 @@ public interface CheckItemService {
     CheckItem findById(Integer id);
 
     void edit(CheckItem checkItem);
+
+    List<CheckItem> findAll();
 }

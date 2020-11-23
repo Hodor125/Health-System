@@ -4,6 +4,8 @@ package com.ahu.constant;
  * 消息常量
  */
 public class MessageConstant {
+    public static final String QUERY_CHECKITEMIDS_BY_CHECKGROUPID_SUCCESS = "成功查询已选检查项";
+    public static final String QUERY_CHECKITEMIDS_BY_CHECKGROUPID_FAIL = "查询已选检查项失败";
     public static final String CHECKITEM_HAS_ASSOCIATION = "当前检查项已经被关联，不能删除";
     public static final String DELETE_CHECKITEM_FAIL = "删除检查项失败";
     public static final String DELETE_CHECKITEM_SUCCESS = "删除检查项成功";

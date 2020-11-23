@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.print.attribute.standard.RequestingUserName;
+import java.util.List;
 
 /**
  * @author ：hodor007
@@ -75,6 +76,17 @@ public class CheckItemController {
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false,MessageConstant.EDIT_CHECKITEM_FAIL);
+        }
+    }
+
+    @RequestMapping("findAll")
+    public Result findAll(){
+        try {
+            List<CheckItem> checkItemList = checkItemService.findAll();
+            return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkItemList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,MessageConstant.QUERY_CHECKGROUP_FAIL);
         }
     }
 }
