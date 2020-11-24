@@ -74,6 +74,13 @@ public class TestQiNiu {
             System.err.println(ex.code());
             System.err.println(ex.response.toString());
         }
+    }
 
+//    @Test
+    public void testLastIndex() {
+        String url = "ansdf.jpg";
+        int i = url.lastIndexOf('.');
+        String substring = url.substring(i);
+        System.out.println(substring);
     }
 }

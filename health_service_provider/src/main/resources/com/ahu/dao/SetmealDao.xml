@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahu.dao.SetmealDao">
+    <!--保存检查套餐-->
+    <insert id="add" parameterType="Setmeal">
+        INSERT INTO t_setmeal (name,code,helpCode,sex,age,price,remark,attention,img)
+        values (#{name},#{code},#{helpCode},#{sex},#{age},#{price},#{remark},#{attention},#{img})
+        <selectKey order="AFTER" resultType="Integer" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="setSetmealAndCheckGroupIds">
+        INSERT INTO t_setmeal_checkgroup
+        values(#{map.setMealId},#{map.checkGroupId})
+    </update>
+
+    <select id="findPage" resultType="Setmeal" parameterType="String">
+        SELECT * FROM t_setmeal
+        <where>
+            <if test="queryString != null and queryString.length > 0">
+                and name like "%"#{queryString}"%" or code=#{queryString} or helpCode like "%"#{queryString}"%"
+            </if>
+        </where>
+    </select>
+</mapper>
