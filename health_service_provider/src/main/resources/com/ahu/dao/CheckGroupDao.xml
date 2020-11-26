@@ -50,4 +50,22 @@
     <select id="findAll" resultType="CheckGroup">
         SELECT * FROM t_checkgroup
     </select>
+
+    <resultMap id="findCheckItemsByCheckGroupIdMap" type="CheckGroup">
+        <id property="id" column="id"/>
+        <collection
+                property="checkItems"
+                javaType="ArrayList"
+                ofType="CheckItem"
+                column="id"
+                select="com.ahu.dao.CheckItemDao.findCheckItemsByCheckGroupId"/>
+    </resultMap>
+
+    <!--确保命名不会冲突id-->
+    <select id="findCheckGroupsBySetmealId" resultMap="findCheckItemsByCheckGroupIdMap" parameterType="Integer">
+        SELECT * FROM t_checkgroup
+        WHERE id in
+        (SELECT checkgroup_id FROM t_setmeal_checkgroup
+        WHERE setmeal_id = #{id})
+    </select>
 </mapper>

@@ -11,6 +11,8 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import org.junit.Test;
 
+import java.util.UUID;
+
 /**
  * @author ：hodor007
  * @date ：Created in 2020/11/23
@@ -30,9 +32,11 @@ public class TestQiNiu {
         String secretKey = "Vem1fsUGZJ2DLFa6yg2MXVv7p_EcvHw0bUKLrcVF";
         String bucket = "health-system-hodor007";
 //如果是Windows情况下，格式是 D:\\qiniu\\test.png
-        String localFilePath = "D:\\java\\健康医疗项目\\day54_health\\资源\\图片资源\\5.jpg";
+        String localFilePath = "D:\\java\\健康医疗项目\\day54_health\\资源\\图片资源\\e373b2eb-0e50-4e95-a09b-03f2c1ee1d351.jpg";
 //默认不指定key的情况下，以文件内容的hash值作为文件名(文件名)
-        String key = "health_01";
+        String uid = UUID.randomUUID().toString();
+//        String key = "health_01";
+        String key = uid + ".jpg";
 
         Auth auth = Auth.create(accessKey, secretKey);
         String upToken = auth.uploadToken(bucket);

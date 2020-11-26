@@ -37,4 +37,13 @@
     <select id="findAll" resultType="CheckItem">
         SELECT * FROM t_checkitem
     </select>
+
+    <!--根据chegroup_id查询所有的checkitem_id-->
+    <select id="findCheckItemsByCheckGroupId" resultType="CheckItem" parameterType="Integer">
+        SELECT * from t_checkitem
+        WHERE id in
+        (SELECT checkitem_id
+        FROM t_checkgroup_checkitem
+        WHERE checkgroup_id = #{id})
+    </select>
 </mapper>

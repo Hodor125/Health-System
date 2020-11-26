@@ -23,7 +23,7 @@ public class TestPOI {
         XSSFWorkbook workbook = null;
         try {
             //创建工作簿
-            workbook = new XSSFWorkbook("D:\\java\\健康医疗项目\\day55_health\\POI.xlsx");
+            workbook = new XSSFWorkbook("D:\\java\\POI.xlsx");
             //获取工作表
             XSSFSheet sheet = workbook.getSheetAt(0);
             //遍历
@@ -51,7 +51,7 @@ public class TestPOI {
         XSSFWorkbook workbook = null;
         try {
             //创建工作簿
-            workbook = new XSSFWorkbook("D:\\java\\健康医疗项目\\day55_health\\POI.xlsx");
+            workbook = new XSSFWorkbook("D:\\POI.xlsx");
             //获取工作表
             XSSFSheet sheet = workbook.getSheetAt(0);
             int lastRowNum = sheet.getLastRowNum();
@@ -75,7 +75,7 @@ public class TestPOI {
         }
     }
 
-//    @Test
+    @Test
     public void TestPOI3(){
         //在内存中创建表格
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -98,7 +98,7 @@ public class TestPOI {
         row2.createCell(2).setCellValue("98");
 
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream("D:\\java\\健康医疗项目\\day55_health\\POI.xlsx");
+            FileOutputStream fileOutputStream = new FileOutputStream("D:\\java\\INSERT.xlsx");
             workbook.write(fileOutputStream);
 //            fileOutputStream.flush();
             fileOutputStream.close();
