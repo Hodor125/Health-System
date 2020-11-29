@@ -29,4 +29,15 @@
         WHERE orderDate=#{orderDate}
     </update>
 
+    <!--通过日期查询预约设置-->
+    <select id="getOrderSettingByDate" parameterType="Date" resultType="OrderSetting">
+        SELECT * FROM t_ordersetting
+        WHERE orderDate = #{date}
+    </select>
+
+    <update id="editReservationsByDate" parameterType="OrderSetting">
+        UPDATE t_ordersetting SET reservations=#{reservations}
+        WHERE orderDate=#{orderDate}
+    </update>
+
 </mapper>
