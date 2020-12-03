@@ -42,4 +42,23 @@ public class ValidateCodeController {
         jedis.close();
         return new Result(true,MessageConstant.SEND_VALIDATECODE_SUCCESS);
     }
+
+    @RequestMapping("/send4Login")
+    public Result send4Login(String telephone){
+        //生成验证码
+        Integer validateCode = ValidateCodeUtils.generateValidateCode(6);
+        //发送到手机
+        try {
+            SMSUtils.sendShortMessage(SMSUtils.VALIDATE_CODE,telephone,validateCode.toString());
+        } catch (ClientException e) {
+            e.printStackTrace();
+            return new Result(false, MessageConstant.SEND_VALIDATECODE_FAIL);
+        }
+
+        //将验证码存在redis中，并设置有效时间
+        Jedis jedis = jedisPool.getResource();
+        jedis.setex(telephone + RedisConstant.SENDTYPE_LOGIN,300,validateCode.toString());
+        jedis.close();
+        return new Result(true,MessageConstant.SEND_VALIDATECODE_SUCCESS);
+    }
 }

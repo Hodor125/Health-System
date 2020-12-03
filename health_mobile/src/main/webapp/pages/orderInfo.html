@@ -120,7 +120,7 @@
                         clock = window.setInterval(doLoop,1000);
                         axios.post("/validateCode/send4Order.do?telephone=" + this.orderInfo.telephone)
                             .then(res => {
-                                if(!res.data.message){
+                                if(!res.data.flag){
                                     this.$message.error(res.data.message);
                                 }
                             })

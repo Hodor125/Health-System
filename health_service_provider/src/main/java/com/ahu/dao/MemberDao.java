@@ -28,4 +28,7 @@ public interface MemberDao {
     public Integer findMemberCountAfterDate(String date);
 
     public Integer findMemberTotalCount();
+
+    //查询截至这个月的会员总数
+    Integer findMemberCountByMonth(String s);
 }

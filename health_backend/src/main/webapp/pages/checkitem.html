@@ -270,12 +270,14 @@
                             //校验通过则提交axios请求
                             axios.post("/checkitem/add.do",this.formData)
                                 .then((res)=>{
-                                    console.log(res.data);
+                                    // console.log(res.data);
+                                    this.$message.success("新建检查项成功");
                                 })
                                 .finally(() => {
                                     //一定要执行的
                                     this.resetForm();
                                     this.findPage();
+                                    this.dialogFormVisible = false;
                                 });
                         }
                     })
@@ -341,8 +343,15 @@
                                     this.$message.error(res.data.message);
                                 }
                             })
-                            .catch(() => {
-                                this.$message().error("未知错误");
+                            .catch((r) => {
+                                if(r == 'Error: Request failed with status code 403'){
+                                    //权限不足
+                                    this.$message.error('无访问权限');
+                                    return;
+                                }else{
+                                    this.$message.error('未知错误');
+                                    return;
+                                }
                             })
                             .finally(() => {
                                 this.findPage();

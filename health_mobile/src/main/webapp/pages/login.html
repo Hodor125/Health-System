@@ -62,9 +62,46 @@
             methods:{
                 //发送验证码
                 sendValidateCode(){
+                    //校验信息
+                    var tel = this.loginInfo.telephone;
+                    if(!checkTelephone(tel)){
+                        this.$message.error("输入的手机号不正确");
+                        return;
+                    }
+                    //设置30等待事件
+                    validateCodeButton = $("#validateCodeButton")[0];
+                    clock = window.setInterval(doLoop,1000);
+                    //发送请求
+                    axios.post("/validateCode/send4Login.do?telephone=" + tel)
+                        .then(res => {
+                            if(!res.data.flag){
+                                this.$message.error(res.data.message);
+                            }
+                        })
+                        .catch(() => {
+                            this.$message.error("未知错误，请重新发送");
+                        })
                 },
-                //登录
+                //登录，校验码方式
                 login(){
+                    //校验手机号
+                    var tel = this.loginInfo.telephone;
+                    if(!checkTelephone(tel)){
+                        this.$message.error("输入的手机号不正确");
+                        return;
+                    }
+                    //发送请求
+                    axios.post("/member/login.do",this.loginInfo)
+                        .then((res) => {
+                            if(res.data.flag){
+                                this.$message.success("登录成功");
+                            } else {
+                                this.$message.error("登录失败");
+                            }
+                        })
+                        .catch(() => {
+                            this.$message.error("未知错误，可能是网络问题");
+                        })
                 }
             }
         });

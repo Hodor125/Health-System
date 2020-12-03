@@ -7,6 +7,8 @@ import com.ahu.entity.Result;
 import com.ahu.pojo.CheckItem;
 import com.ahu.service.CheckItemService;
 import com.alibaba.dubbo.config.annotation.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +17,7 @@ import javax.print.attribute.standard.RequestingUserName;
 import java.util.List;
 
 /**
+ * 检查项控制器
  * @author ：hodor007
  * @date ：Created in 2020/11/21
  * @description ：
@@ -37,6 +40,7 @@ public class CheckItemController {
         return new Result(true, MessageConstant.ADD_CHECKITEM_SUCCESS);
     }
 
+    //分页查询
     @RequestMapping("/findPage")
     public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
         PageResult pageResult = checkItemService.findPage(queryPageBean);
@@ -44,6 +48,7 @@ public class CheckItemController {
     }
 
     @RequestMapping("/deleteById")
+    @PreAuthorize("hasAnyAuthority('CHECKITEM_DELETE')")
     public Result deleteById(Integer id){
         try {
             checkItemService.deleteById(id);
@@ -57,6 +62,7 @@ public class CheckItemController {
         return new Result(true,MessageConstant.DELETE_CHECKITEM_SUCCESS);
     }
 
+    //根据id删除
     @RequestMapping("/findById")
     public Result findById(Integer id){
         try {
@@ -69,6 +75,7 @@ public class CheckItemController {
     }
 
     @RequestMapping("/edit")
+    @PreAuthorize("hasAnyAuthority('CHECKITEM_EDIT')")
     public Result edit(@RequestBody CheckItem checkItem){
         try {
             checkItemService.edit(checkItem);

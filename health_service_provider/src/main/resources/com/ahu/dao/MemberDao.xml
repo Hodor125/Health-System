@@ -95,4 +95,10 @@
     <select id="findMemberTotalCount" resultType="int">
         select count(id) from t_member
     </select>
+
+    <!--查询这个月的会员总数量-->
+    <select id="findMemberCountByMonth" resultType="Integer">
+        SELECT count(*) FROM t_member
+        WHERE regTime &lt;= #{s}
+    </select>
 </mapper>

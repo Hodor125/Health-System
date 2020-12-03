@@ -37,14 +37,14 @@
                         <el-dropdown class="avatar-container right-menu-item" trigger="click">
                             <div class="avatar-wrapper">
                                 <img src="../img/user2-160x160.jpg" class="user-avatar">
-                                Jay.Liu
+                                {{username}}
                             </div>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item divided>
                                     <span style="display:block;">修改密码</span>
                                 </el-dropdown-item>
                                 <el-dropdown-item divided>
-                                        <span style="display:block;">退出</span>
+                                        <span style="display:block;"><a href="/logout.do">退出</a></span>
                                     </el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
@@ -81,10 +81,12 @@
 <script src="../js/vue.js"></script>
 <script src="../plugins/elementui/index.js"></script>
 <script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
 <script>
     new Vue({
         el: '#app',
         data:{
+            username:'',
             menuList:[
                 {
                     "path": "1",
@@ -173,13 +175,27 @@
                     "children":[//是否有子菜单，若没有，则为[]
                         {
                             "path": "/5-1",
-                            "title": "工作量统计",
-                            "linkUrl":"all-medical-list.html",
+                            "title": "会员数量统计",
+                            "linkUrl":"report_member.html",
                             "children":[]
                         }
                     ]
                 }
             ]
+        },
+        mounted(){
+            //发送请求获取当前登录用户的用户名
+            axios.get("/user/getUserName.do")
+                .then((res) => {
+                    if(res.data.flag){
+                        this.username = res.data.data;
+                    } else {
+                        this.$message.error("获取用户名失败");
+                    }
+                })
+                .catch(() => {
+                    this.$message.error("未知错误，可能是网络原因");
+                })
         }
     });
     $(function() {
