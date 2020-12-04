@@ -5,6 +5,7 @@ import com.ahu.entity.QueryPageBean;
 import com.ahu.pojo.Setmeal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：XXXX
@@ -22,4 +23,6 @@ public interface SetmealService {
     List<Setmeal> findAll();
 
     Setmeal findById(Integer id);
+
+    List<Map<String,Object>> findSetmealCount();
 }

@@ -24,4 +24,10 @@ public interface SetmealDao {
     List<Setmeal> findAll();
 
     Setmeal findById(Integer id);
+
+    //进行套餐统计
+    public List<Map<String,Object>> findSetmealCount();
+
+    //查找最热门套餐
+    List<Map<String, Object>> findHotSetmeal();
 }

@@ -44,4 +44,20 @@
         SELECT * FROM t_setmeal
         where id = #{id}
     </select>
+
+    <select id="findSetmealCount" resultType="Map">
+        SELECT s.name,count(o.id) value FROM
+        t_order o,t_setmeal s
+        WHERE o.setmeal_id = s.id
+        GROUP BY s.name;
+    </select>
+
+    <select id="findHotSetmeal" resultType="Map">
+        SELECT s.name, count(o.id) as setmeal_count, count(o.id) / (SELECT count(*) from t_order) proportion
+        FROM t_order o INNER JOIN t_setmeal s
+        ON o.setmeal_id=s.id
+        GROUP BY s.name
+        ORDER BY setmeal_count DESC
+        LIMIT 0,2
+    </select>
 </mapper>
